@@ -1,25 +1,53 @@
+import { useState } from "react";
 import BusyHoursSCSS from "../Style/BusyHours.module.scss";
 
-export default function BusyHours() {
+export default function BusyHours({ createBusyTimeList }) {
+  const [dateBusy, setDateBusy] = useState("");
+  const [hoursBusy, setHoursBusy] = useState("0");
+
+  const handleCreateList = () => {
+    const data = {
+      dateBusy: dateBusy,
+      hoursBusy: hoursBusy,
+    };
+    createBusyTimeList(data);
+    setDateBusy("");
+    setHoursBusy("0");
+  };
+
+  const handleInput = (e, d) => {
+    switch (d) {
+      case "dateBusy":
+        setDateBusy(e.target.value);
+        break;
+      case "hoursBusy":
+        setHoursBusy(e.target.value);
+        break;
+
+      default:
+    }
+  };
+
   return (
     <>
       <div className={BusyHoursSCSS.busyHoursRow}>
-        <label htmlFor="busyHours">busyHours</label>
+        <label htmlFor="dateBusy">Date</label>
         <input
           type="date"
-          id="date2"
+          id="dateBusy"
           placeholder="Date of Busy Hours"
-          // value
-          // onChange
+          value={dateBusy}
+          onChange={(e) => handleInput(e, "dateBusy")}
         />
+        <label htmlFor="hoursBusy">Busy Hours</label>
         <input
           type="number"
-          id="hours"
+          id="hoursBusy"
           placeholder="Busy Hours"
-          // value
-          // onChange
+          value={hoursBusy}
+          onChange={(e) => handleInput(e, "hoursBusy")}
         />
-        <button>Save and tape other</button>
+        <button onClick={handleCreateList}>Save and tape other</button>
       </div>
     </>
   );
