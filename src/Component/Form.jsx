@@ -1,6 +1,11 @@
 import FormSCSS from "../Style/Form.module.scss";
 import BusyHours from "./BusyHours";
-export default function Form({ createBusyTimeList }) {
+export default function Form({
+  createBusyTimeList,
+  times,
+  deleteElement,
+  show,
+}) {
   return (
     <>
       <div className={FormSCSS.formRow}>
@@ -26,7 +31,12 @@ export default function Form({ createBusyTimeList }) {
             />
           </div>
 
-          <BusyHours createBusyTimeList={createBusyTimeList} />
+          <BusyHours
+            times={times}
+            createBusyTimeList={createBusyTimeList}
+            deleteElement={deleteElement}
+            show={show}
+          />
 
           <button
             //   onClick=

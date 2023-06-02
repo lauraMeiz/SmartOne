@@ -29,10 +29,23 @@ function App() {
 
     setTimes((times) => [...times, time]);
   };
+
+  const deleteElement = (id) => {
+    // localStorage logic
+    const newData = times.filter((time) => time.id !== id);
+    localStorage.setItem("time", JSON.stringify(newData));
+    //
+    setTimes((times) => times.filter((time) => time.id !== id));
+  };
+
   return (
     <>
       <div className="App">
-        <Form createBusyTimeList={createBusyTimeList} />
+        <Form
+          times={times}
+          createBusyTimeList={createBusyTimeList}
+          deleteElement={deleteElement}
+        />
       </div>
     </>
   );

@@ -1,7 +1,13 @@
 import { useState } from "react";
 import BusyHoursSCSS from "../Style/BusyHours.module.scss";
+import BusyHoursList from "./BusyHoursList";
 
-export default function BusyHours({ createBusyTimeList }) {
+export default function BusyHours({
+  createBusyTimeList,
+  times,
+  deleteElement,
+  show,
+}) {
   const [dateBusy, setDateBusy] = useState("");
   const [hoursBusy, setHoursBusy] = useState("0");
 
@@ -48,6 +54,11 @@ export default function BusyHours({ createBusyTimeList }) {
           onChange={(e) => handleInput(e, "hoursBusy")}
         />
         <button onClick={handleCreateList}>Save and tape other</button>
+        <BusyHoursList
+          show={show}
+          deleteElement={deleteElement}
+          times={times}
+        />
       </div>
     </>
   );
