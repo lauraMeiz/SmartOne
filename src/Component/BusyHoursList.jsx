@@ -1,7 +1,6 @@
 import BusyHoursElement from "./BusyHoursElement";
 
 export default function BusyHoursList({ times, deleteElement, show }) {
-  console.log(times);
   return (
     <>
       <div>

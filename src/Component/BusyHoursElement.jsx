@@ -1,4 +1,5 @@
 export default function BusyHoursElement({ time, deleteElement, show }) {
+  console.log(time.id);
   const handleDelete = (id) => {
     deleteElement(parseInt(id));
   };
@@ -7,7 +8,7 @@ export default function BusyHoursElement({ time, deleteElement, show }) {
       <div>{time.dateBusy}</div>
       <div>{time.hoursBusy}</div>
       <div className="buttons">
-        <button onClick={() => handleDelete(time.id)} className="trinti">
+        <button onClick={() => handleDelete(time.id)} className="">
           Delete
         </button>
         <button className="edit" onClick={() => show(time.id)}>
