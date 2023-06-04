@@ -1,5 +1,4 @@
 export default function BusyHoursElement({ time, deleteElement, show }) {
-  console.log(time.id);
   const handleDelete = (id) => {
     deleteElement(parseInt(id));
   };

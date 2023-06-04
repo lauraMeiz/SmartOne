@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import EditBusyHoursSCSS from "../Style/EditBusyHours.module.scss";
 export default function EditBusyHours({ editElement, time, cancel }) {
-  console.log(time);
   const [dateBusy, setDateBusy] = useState("");
   const [hoursBusy, setHoursBusy] = useState("0");
-  console.log(time);
+
   useEffect(() => {
     setDateBusy(time.dateBusy);
     setHoursBusy(time.hoursBusy);

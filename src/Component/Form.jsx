@@ -1,6 +1,43 @@
+import { useEffect, useState } from "react";
 import FormSCSS from "../Style/Form.module.scss";
 import EditBusyHours from "./EditBusyHours";
-export default function Form({ times, editElement, cancel, modal, time }) {
+export default function Form({
+  times,
+  editElement,
+  cancel,
+  modal,
+  time,
+  fixGoal,
+  goals,
+  setGoals,
+}) {
+  const [volume, setVolume] = useState("0");
+  const [date, setDate] = useState("");
+
+  const handleGoal = () => {
+    const dataGoal = {
+      volume: volume,
+      date: date,
+    };
+    fixGoal(dataGoal);
+
+    setDate("");
+    setVolume("0");
+  };
+
+  const handleInput = (e, d) => {
+    switch (d) {
+      case "volume":
+        setVolume(e.target.value);
+        break;
+      case "date":
+        setDate(e.target.value);
+        break;
+
+      default:
+    }
+  };
+
   return (
     <>
       <div className={FormSCSS.formRow}>
@@ -11,8 +48,8 @@ export default function Form({ times, editElement, cancel, modal, time }) {
               type="number"
               id="volume"
               placeholder="Total Hours"
-              // value
-              // onChange
+              value={volume}
+              onChange={(e) => handleInput(e, "volume")}
             />
           </div>
           <div>
@@ -21,16 +58,12 @@ export default function Form({ times, editElement, cancel, modal, time }) {
               type="date"
               id="date"
               placeholder="Deadline"
-              // value
-              // onChange
+              volume={date}
+              onChange={(e) => handleInput(e, "date")}
             />
           </div>
 
-          <button
-            //   onClick=
-            //
-            type="submit"
-          >
+          <button onClick={handleGoal} type="submit">
             Show a result
           </button>
         </form>
