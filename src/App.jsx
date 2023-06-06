@@ -9,6 +9,7 @@ function App() {
   const [times, setTimes] = useState([]);
   const [modal, setModal] = useState(0);
   const [goals, setGoals] = useState([]);
+  const [results, setResults] = useState([]);
 
   useEffect(() => {
     let data = localStorage.getItem("times");
@@ -27,6 +28,15 @@ function App() {
       setGoals([]);
     } else {
       setGoals(JSON.parse(data1));
+    }
+  }, []);
+  useEffect(() => {
+    let data2 = localStorage.getItem("result");
+    if (null === data2) {
+      localStorage.setItem("result", JSON.stringify([]));
+      setResults([]);
+    } else {
+      setResults(JSON.parse(data2));
     }
   }, []);
 
@@ -61,27 +71,81 @@ function App() {
 
   const GetGoals = JSON.parse(localStorage.getItem("goals"));
   console.log(GetGoals);
-  const lastTypedDate = GetGoals.slice(-1).pop();
-  const lastTypedDateNumber = lastTypedDate.date.split("-");
+  const sliceGoals = GetGoals?.slice(-1).pop();
+  console.log(sliceGoals);
+  const lastTypedDate = GetGoals === [] || GetGoals === null ? [] : sliceGoals;
+  const gotGoals = sliceGoals ? sliceGoals.date : null;
 
   const currentDateNumber = currentDate.split("-");
 
-  console.log(lastTypedDateNumber, currentDateNumber);
+  console.log(gotGoals, currentDate);
 
-  //hours from today
+  let date1 = new Date(currentDate);
+  let date2 = new Date(gotGoals);
 
-  // const daysLeft =
-  //   Number(Math.abs(lastTypedDateNumber[2])) -
-  //   Number(Math.abs(currentDateNumber[2]));
-  // console.log(daysLeft);
-  // const monthLeft =
-  //   Number(Math.abs(lastTypedDateNumber[1])) -
-  //   Number(Math.abs(currentDateNumber[1]));
-  // console.log(monthLeft);
+  // To calculate the time difference of two dates
+  let Difference_In_Time = date2.getTime() - date1.getTime();
 
-  //const months_left = Number(Math.abs(calcFormat[1]) - 1);
-  // const years_left = Number(Math.abs(calcFormat[2]) - 1970);
+  // To calculate the no. of hours between two dates
+  let Difference_In_Hours = Difference_In_Time / (1000 * 3600);
+  let Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+  //To display the final no. of days (result)
+  console.log(Difference_In_Hours);
+  const maxHoursNeeded = sliceGoals.volume / Difference_In_Days;
 
+  // render array of dates
+  const getDatesInRange = (startDate, endDate) => {
+    // const start = new Date(new Date(startDate).setUTCHours(0, 0, 0, 0));
+    const start = new Date(new Date(startDate));
+    const end = new Date(new Date(endDate));
+
+    const date = new Date(start.getTime());
+
+    const dates = [];
+    const maxHoursNeeded = sliceGoals.volume / Difference_In_Days;
+    while (date <= end) {
+      const sleep = "8";
+      const eat = "1";
+      const total = "24" - sleep - eat;
+      const hours =
+        total > parseInt(maxHoursNeeded) ? parseInt(maxHoursNeeded) : total;
+
+      dates.push({
+        id: getNewId(),
+        date: new Date(date),
+        hours: hours,
+      });
+      date.setDate(date.getDate() + 1);
+    }
+
+    return dates;
+  };
+
+  const res = getDatesInRange(currentDate, gotGoals);
+
+  const resFormated = res.map((e) => {
+    const hours = e.hours;
+
+    const date = e.date;
+
+    let day = "" + date.getDate();
+
+    let month = "" + (date.getMonth() + 1);
+    let year = date.getFullYear();
+
+    if (month.length < 2) {
+      month = "0" + month;
+    }
+    if (day.length < 2) {
+      day = "0" + day;
+    }
+
+    let letsDate = `${year}-${month}-${day}`;
+
+    return { date: letsDate, hours: hours };
+  });
+
+  //
   const createBusyTimeList = (data) => {
     const time = {
       id: getNewId(),
@@ -94,6 +158,64 @@ function App() {
     //
 
     setTimes((times) => [...times, time]);
+  };
+
+  //console.log(JSON.parse(localStorage.getItem("times")));
+  const getTimes = JSON.parse(localStorage.getItem("times"));
+  //
+  console.log(getTimes);
+  const resFormated2 = JSON.parse(localStorage.getItem("result"));
+
+  console.log(resFormated2);
+
+  const arrayTime = [];
+  const elementTimes = getTimes
+    ? getTimes.forEach((e) => {
+        const date = e.dateBusy;
+        const hours = e.hoursBusy;
+        arrayTime.push({ date: date, hours: hours });
+        return arrayTime;
+      })
+    : null;
+  console.log(arrayTime);
+  const arrayResult = [];
+  const elementResult = resFormated
+    ? resFormated.forEach((e) => {
+        const date = e.date;
+        const hours = e.hours;
+        arrayResult.push({ date: date, hours: hours });
+        return arrayResult;
+      })
+    : null;
+  const arrayConcat = arrayResult.concat(arrayTime);
+  console.log(arrayConcat);
+
+  const sum = arrayConcat
+    ? arrayConcat.reduce((acc, cur) => {
+        const found = acc.find((val) => val.date === cur.date);
+        if (found) {
+          found.hours -= Number(cur.hours);
+        } else {
+          acc.push({ ...cur, hours: Number(cur.hours) });
+        }
+        return acc;
+      }, [])
+    : null;
+
+  console.log(sum);
+
+  const getResult = (data2) => {
+    const result = {
+      id: getNewId(),
+      resFormated,
+    };
+
+    // localStorage logic
+    const newData = [...results, result];
+    localStorage.setItem("result", JSON.stringify(newData));
+    //
+
+    setResults((results) => [...results, result]);
   };
 
   const fixGoal = (data1) => {
@@ -153,6 +275,9 @@ function App() {
           fixGoal={fixGoal}
           goals={goals}
           setGoals={setGoals}
+          // getArrayRes={getArrayRes}
+          getResult={getResult}
+          resFormated={resFormated}
         />
         <CreateBusyHours
           times={times}

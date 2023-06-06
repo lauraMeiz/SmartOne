@@ -10,6 +10,9 @@ export default function Form({
   fixGoal,
   goals,
   setGoals,
+  getResult,
+  getArrayRes,
+  resFormated,
 }) {
   const [volume, setVolume] = useState("0");
   const [date, setDate] = useState("");
@@ -19,11 +22,21 @@ export default function Form({
       volume: volume,
       date: date,
     };
+    const resultGoal = {
+      resFormated: resFormated,
+    };
     fixGoal(dataGoal);
-
+    getResult(resultGoal);
     setDate("");
     setVolume("0");
   };
+
+  // const calculate = () => {
+  //   const result = {
+  //     volume: (goals.volume = +times.hoursBusy),
+  //   };
+  //   getResult(result);
+  // };
 
   const handleInput = (e, d) => {
     switch (d) {
@@ -64,6 +77,7 @@ export default function Form({
           </div>
 
           <button onClick={handleGoal} type="submit">
+            {/* <button onClick={getResult} type="submit"> */}
             Show a result
           </button>
         </form>
