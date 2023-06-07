@@ -1,6 +1,11 @@
 .formRow {
+  background-color: rgb(99, 84, 84);
   width: 300px;
-  height: 300px;
+  // height: 300px;
   margin: 70px calc(50% - 150px);
-  background-color: rgb(211, 207, 202);
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  padding: 10px;
+  color: rgb(240, 230, 230);
 }

@@ -1,0 +1,10 @@
+.resultRow {
+  background-color: rgb(246, 243, 243);
+  width: 600px;
+  height: 600px;
+  margin: 0px calc(50% - 300px);
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  color: rgb(240, 230, 230);
+}

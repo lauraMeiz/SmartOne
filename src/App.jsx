@@ -4,13 +4,17 @@ import Form from "./Component/Form";
 import getNewId from "./Common/id";
 import CreateBusyHours from "./Component/CreateBusyHours";
 import BusyHoursList from "./Component/BusyHoursList";
+import ResultList from "./Component/ResultList";
+import React from "react";
 
 function App() {
   const [times, setTimes] = useState([]);
   const [modal, setModal] = useState(0);
   const [goals, setGoals] = useState([]);
   const [results, setResults] = useState([]);
+  const [onTime, setOnTime] = useState(0);
 
+  //
   useEffect(() => {
     let data = localStorage.getItem("times");
     if (null === data) {
@@ -90,8 +94,8 @@ function App() {
   let Difference_In_Hours = Difference_In_Time / (1000 * 3600);
   let Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
   //To display the final no. of days (result)
-  console.log(Difference_In_Hours);
-  const maxHoursNeeded = sliceGoals.volume / Difference_In_Days;
+
+  //const maxHoursNeeded = sliceGoals.volume / Difference_In_Days;
 
   // render array of dates
   const getDatesInRange = (startDate, endDate) => {
@@ -102,20 +106,30 @@ function App() {
     const date = new Date(start.getTime());
 
     const dates = [];
-    const maxHoursNeeded = sliceGoals.volume / Difference_In_Days;
-    while (date <= end) {
-      const sleep = "8";
-      const eat = "1";
-      const total = "24" - sleep - eat;
-      const hours =
-        total > parseInt(maxHoursNeeded) ? parseInt(maxHoursNeeded) : total;
+    const maxHoursNeededPerDay = sliceGoals
+      ? +sliceGoals.volume / Difference_In_Days
+      : null;
 
+    while (date <= end && +sliceGoals.volume) {
+      const sleep = "8";
+      const eat = "4";
+      const total = "24" - sleep - eat; //12
+      console.log(total);
+      //const r = total;
+
+      const hours =
+        total > parseInt(maxHoursNeededPerDay)
+          ? parseInt(maxHoursNeededPerDay)
+          : total;
+
+      console.log(maxHoursNeededPerDay, +sliceGoals.volume, Difference_In_Days);
       dates.push({
         id: getNewId(),
         date: new Date(date),
         hours: hours,
       });
       date.setDate(date.getDate() + 1);
+      console.log(dates);
     }
 
     return dates;
@@ -162,8 +176,9 @@ function App() {
 
   //console.log(JSON.parse(localStorage.getItem("times")));
   const getTimes = JSON.parse(localStorage.getItem("times"));
-  //
   console.log(getTimes);
+  //
+
   const resFormated2 = JSON.parse(localStorage.getItem("result"));
 
   console.log(resFormated2);
@@ -177,7 +192,7 @@ function App() {
         return arrayTime;
       })
     : null;
-  console.log(arrayTime);
+
   const arrayResult = [];
   const elementResult = resFormated
     ? resFormated.forEach((e) => {
@@ -189,20 +204,28 @@ function App() {
     : null;
   const arrayConcat = arrayResult.concat(arrayTime);
   console.log(arrayConcat);
-
-  const sum = arrayConcat
+  let total = sliceGoals ? +sliceGoals.volume : null;
+  // const ska = total / Difference_In_Days;
+  // console.log(ska);
+  const sumArray = arrayConcat
     ? arrayConcat.reduce((acc, cur) => {
         const found = acc.find((val) => val.date === cur.date);
+
         if (found) {
           found.hours -= Number(cur.hours);
+          console.log(total);
+
+          total -= Number(cur.hours);
         } else {
           acc.push({ ...cur, hours: Number(cur.hours) });
         }
         return acc;
       }, [])
     : null;
+  // console.log(sliceGoals.volume);
 
-  console.log(sum);
+  console.log(sumArray);
+  // console.log(total);
 
   const getResult = (data2) => {
     const result = {
@@ -259,10 +282,53 @@ function App() {
     setTimes((times) => times.filter((time) => time.id !== id));
   };
 
+  const willDo = () => {
+    const isVisoTuriu = Difference_In_Days * 24;
+    const sleep = "8";
+    const eat = "4";
+    const iskrenta = "24" - sleep - eat; //12
+    const totalIskrenta = iskrenta * Difference_In_Days;
+    let sum = 0;
+
+    for (let i = 0; i < getTimes.length; i++) {
+      const element = getTimes[i].hoursBusy;
+      sum += +element;
+    }
+
+    const kiekPerDienaLieka =
+      (isVisoTuriu - totalIskrenta - sum) / Difference_In_Days;
+
+    const kiekReikiaPerDiena = sliceGoals
+      ? +sliceGoals.volume / Difference_In_Days
+      : null;
+    const spesiu =
+      kiekReikiaPerDiena < kiekPerDienaLieka ? setOnTime(1) : setOnTime(0);
+
+    console.log(sum);
+    console.log(spesiu);
+  };
+
   return (
     <>
       <div className="App">
-        <div>{currentDate}</div>
+        <div>
+          <h1>Let's check your chance !</h1>
+          <div>Today {currentDate}</div>
+        </div>
+
+        <CreateBusyHours
+          times={times}
+          createBusyTimeList={createBusyTimeList}
+          deleteElement={deleteElement}
+          show={show}
+        />
+
+        <BusyHoursList
+          show={show}
+          deleteElement={deleteElement}
+          times={times}
+        />
+
         <Form
           times={times}
           createBusyTimeList={createBusyTimeList}
@@ -275,20 +341,15 @@ function App() {
           fixGoal={fixGoal}
           goals={goals}
           setGoals={setGoals}
-          // getArrayRes={getArrayRes}
           getResult={getResult}
           resFormated={resFormated}
         />
-        <CreateBusyHours
+
+        <ResultList
+          results={sumArray}
           times={times}
-          createBusyTimeList={createBusyTimeList}
-          deleteElement={deleteElement}
-          show={show}
-        />
-        <BusyHoursList
-          show={show}
-          deleteElement={deleteElement}
-          times={times}
+          willDo={willDo}
+          onTime={onTime}
         />
       </div>
     </>

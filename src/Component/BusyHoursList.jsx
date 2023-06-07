@@ -1,9 +1,10 @@
 import BusyHoursElement from "./BusyHoursElement";
-
+import BusyHoursElementSCSS from "../Style/BusyHoursElement.module.scss";
 export default function BusyHoursList({ times, deleteElement, show }) {
+  console.log(times);
   return (
     <>
-      <div>
+      <div className={BusyHoursElementSCSS.busyRow}>
         {times.map((time) => (
           <BusyHoursElement
             key={time.id}
