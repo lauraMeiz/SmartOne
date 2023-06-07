@@ -14,6 +14,7 @@ export default function Form({
   getResult,
   getArrayRes,
   resFormated,
+  willDo,
 }) {
   const [volume, setVolume] = useState("0");
   const [date, setDate] = useState("");
@@ -28,6 +29,7 @@ export default function Form({
     };
     fixGoal(dataGoal);
     getResult(resultGoal);
+    willDo();
     setDate("");
     setVolume("0");
   };

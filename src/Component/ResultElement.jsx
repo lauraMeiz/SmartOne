@@ -1,8 +1,6 @@
 import ResultElementSCSS from "../Style/ResultElement.module.scss";
 
 export default function ResultElement({ result, times }) {
-  console.log(result, times);
-
   return (
     <>
       <div className={ResultElementSCSS.busyColumn}>

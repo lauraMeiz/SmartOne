@@ -76,13 +76,11 @@ function App() {
   const GetGoals = JSON.parse(localStorage.getItem("goals"));
   console.log(GetGoals);
   const sliceGoals = GetGoals?.slice(-1).pop();
-  console.log(sliceGoals);
+
   const lastTypedDate = GetGoals === [] || GetGoals === null ? [] : sliceGoals;
   const gotGoals = sliceGoals ? sliceGoals.date : null;
 
   const currentDateNumber = currentDate.split("-");
-
-  console.log(gotGoals, currentDate);
 
   let date1 = new Date(currentDate);
   let date2 = new Date(gotGoals);
@@ -101,7 +99,7 @@ function App() {
   const getDatesInRange = (startDate, endDate) => {
     // const start = new Date(new Date(startDate).setUTCHours(0, 0, 0, 0));
     const start = new Date(new Date(startDate));
-    const end = new Date(new Date(endDate));
+    const end = new Date(new Date(endDate) - 1);
 
     const date = new Date(start.getTime());
 
@@ -114,7 +112,7 @@ function App() {
       const sleep = "8";
       const eat = "4";
       const total = "24" - sleep - eat; //12
-      console.log(total);
+
       //const r = total;
 
       const hours =
@@ -122,14 +120,12 @@ function App() {
           ? parseInt(maxHoursNeededPerDay)
           : total;
 
-      console.log(maxHoursNeededPerDay, +sliceGoals.volume, Difference_In_Days);
       dates.push({
         id: getNewId(),
         date: new Date(date),
         hours: hours,
       });
       date.setDate(date.getDate() + 1);
-      console.log(dates);
     }
 
     return dates;
@@ -203,17 +199,15 @@ function App() {
       })
     : null;
   const arrayConcat = arrayResult.concat(arrayTime);
-  console.log(arrayConcat);
+
   let total = sliceGoals ? +sliceGoals.volume : null;
-  // const ska = total / Difference_In_Days;
-  // console.log(ska);
+
   const sumArray = arrayConcat
     ? arrayConcat.reduce((acc, cur) => {
         const found = acc.find((val) => val.date === cur.date);
 
         if (found) {
           found.hours -= Number(cur.hours);
-          console.log(total);
 
           total -= Number(cur.hours);
         } else {
@@ -222,10 +216,8 @@ function App() {
         return acc;
       }, [])
     : null;
-  // console.log(sliceGoals.volume);
 
   console.log(sumArray);
-  // console.log(total);
 
   const getResult = (data2) => {
     const result = {
@@ -303,11 +295,10 @@ function App() {
       : null;
     const spesiu =
       kiekReikiaPerDiena < kiekPerDienaLieka ? setOnTime(1) : setOnTime(0);
-
-    console.log(sum);
-    console.log(spesiu);
+    return spesiu;
   };
 
+  console.log(onTime);
   return (
     <>
       <div className="App">
@@ -343,13 +334,14 @@ function App() {
           setGoals={setGoals}
           getResult={getResult}
           resFormated={resFormated}
+          willDo={willDo}
         />
 
         <ResultList
           results={sumArray}
           times={times}
-          willDo={willDo}
           onTime={onTime}
+          willDo={willDo}
         />
       </div>
     </>

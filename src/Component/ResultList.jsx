@@ -1,6 +1,7 @@
 import ResultElement from "./ResultElement";
 import ResultListSCSS from "../Style/ResultList.module.scss";
-export default function ResultList({ results, willDo, onTime }) {
+export default function ResultList({ results, onTime, willDo }) {
+  willDo();
   return (
     <>
       <div>{onTime ? <div>Spesiu</div> : <div>Nespesiu</div>}</div>
