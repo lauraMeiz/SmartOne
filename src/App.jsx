@@ -78,7 +78,7 @@ function App() {
   //Days from today untill deadline
 
   const GetGoals = JSON.parse(localStorage.getItem("goals"));
-  console.log(GetGoals);
+
   const sliceGoals = GetGoals?.slice(-1).pop();
 
   const lastTypedDate = GetGoals === [] || GetGoals === null ? [] : sliceGoals;
@@ -97,11 +97,8 @@ function App() {
   let Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
   //To display the final no. of days (result)
 
-  //const maxHoursNeeded = sliceGoals.volume / Difference_In_Days;
-
   // render array of dates
   const getDatesInRange = (startDate, endDate) => {
-    // const start = new Date(new Date(startDate).setUTCHours(0, 0, 0, 0));
     const start = new Date(new Date(startDate));
     const end = new Date(new Date(endDate) - 1);
 
@@ -118,21 +115,13 @@ function App() {
       sum += +element;
     }
 
-    const isVisoTuriu = Difference_In_Days * 24; //kiek yra
+    const isVisoTuriu = Difference_In_Days * 24;
+    let chance = isVisoTuriu - Difference_In_Days * totalPerDay;
+
     //kiek lieka po miego busy ir t.t.
-    let chance = isVisoTuriu - Difference_In_Days * totalPerDay - sum;
-
-    console.log(chance);
-
-    console.log(sum);
     const maxHoursHavePerDay = (chance - sum) / Difference_In_Days;
     const maxHoursNeededPerDay = total / Difference_In_Days;
-    console.log(maxHoursNeededPerDay, maxHoursHavePerDay);
 
-    // const getTimes = JSON.parse(localStorage.getItem("times"));
-    //console.log(getTimes, Difference_In_Days);
-    const limit = parseInt(maxHoursHavePerDay) - parseInt(maxHoursNeededPerDay);
-    console.log(maxHoursHavePerDay, maxHoursNeededPerDay, limit);
     while (date <= end) {
       const hours =
         parseInt(maxHoursNeededPerDay) + parseInt(sum / Difference_In_Days);
@@ -147,7 +136,7 @@ function App() {
 
     return dates;
   };
-  console.log(times);
+
   const res = getDatesInRange(currentDate, gotGoals);
 
   const resFormated = res
@@ -174,7 +163,6 @@ function App() {
       })
     : null;
 
-  //
   const createBusyTimeList = (data) => {
     const time = {
       id: getNewId(),
@@ -189,18 +177,9 @@ function App() {
     setTimes((times) => [...times, time]);
   };
 
-  //console.log(JSON.parse(localStorage.getItem("times")));
   const getTimes = JSON.parse(localStorage.getItem("times"));
   console.log(getTimes);
-  //
-  let total = sliceGoals ? +sliceGoals.volume : null;
-  // let sum = 0;
 
-  // for (let i = 0; i < getTimes.length; i++) {
-  //   const element = getTimes[i].hoursBusy;
-  //   sum += +element;
-  // }
-  // console.log(sum);
   const resFormated2 = JSON.parse(localStorage.getItem("result"));
 
   console.log(resFormated2);
@@ -227,53 +206,20 @@ function App() {
 
   const arrayConcat = arrayResult.concat(arrayTime);
 
-  // let total = sliceGoals ? +sliceGoals.volume : null;
-  // // let sum = 0;
-
-  // for (let i = 0; i < getTimes.length; i++) {
-  //   const element = getTimes[i].hoursBusy;
-  //   sum += +element;
-  // }
-  // let bigTotal = total - sum;
-  // console.log(bigTotal);
-  //today maziau negu max per day == 0 !!!
   const sumArray = arrayConcat
     ? arrayConcat.reduce((acc, cur) => {
         const found = acc.find((val) => val.date === cur.date);
         let isVisoTuriu = Difference_In_Days * 24; //kiek yra
 
         let possibility = isVisoTuriu - sum - Difference_In_Days * 12;
-        let gg = possibility / Difference_In_Days;
+
         if (found) {
           console.log(getTimes, Difference_In_Days);
 
-          console.log(possibility);
-
-          console.log(gg);
           possibility -= Number(cur.hours);
 
-          console.log(possibility);
-          console.log(gg);
-
           found.hours -= Number(cur.hours);
-        }
-        // if (found) {
-        //   possibility -= Number(cur.hours);
-
-        //   console.log(possibility);
-        //   console.log(gg);
-        // }
-        // if (found && Number(cur.hours) < gg) {
-        //   found.hours += Number(cur.hours);
-        // }
-
-        // if (Number(cur.hours) < 0) {
-        //   acc.push({ ...cur, hours: (totalPerDay -= Number(cur.hours)) });
-        // }
-        // if (found && totalPerDay > Number(cur.hours)) {
-        //   totalPerDay -= Number(cur.hours);
-        // }
-        else {
+        } else {
           acc.push({ ...cur, hours: Number(cur.hours) });
         }
         return acc;
@@ -291,7 +237,6 @@ function App() {
     // localStorage logic
     const newData = [...results, result];
     localStorage.setItem("result", JSON.stringify(newData));
-    //
 
     setResults((results) => [...results, result]);
   };
@@ -333,18 +278,16 @@ function App() {
     // localStorage logic
     const newData = times.filter((time) => time.id !== id);
     localStorage.setItem("times", JSON.stringify(newData));
-    //
+
     setTimes((times) => times.filter((time) => time.id !== id));
   };
   const willDo = () => {
     const getTime = JSON.parse(localStorage.getItem("times"));
     const getTimes = getTime ? getTime : null;
     const isVisoTuriu = Difference_In_Days * 24;
-    // const sleep = "8";
-    // const eat = "4";
+
     const iskrenta = "24" - sleep - eat; //12
     const totalIskrenta = iskrenta * Difference_In_Days;
-    // let sum = 0;
 
     for (let i = 0; i < getTimes && getTimes.length; i++) {
       const element = getTimes[i].hoursBusy;
@@ -362,7 +305,6 @@ function App() {
     return spesiu;
   };
 
-  console.log(times);
   return (
     <>
       <div className={AppSCSS.app}>

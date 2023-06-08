@@ -6,7 +6,6 @@ export default function ResultElement({ result, times, onTime, totalPerDay }) {
       <div className={ResultElementSCSS.busyColumn}>
         <div>{result.date}</div>
         <div>{result.hours < 0 && onTime ? null : result.hours}</div>
-        {/* <div>{result.hours}</div> */}
       </div>
     </>
   );

@@ -8,7 +8,6 @@ export default function ResultList({
   times,
   sliceGoals,
 }) {
-  //   const busyHours = times.map((m, i) => m.hoursBusy);
   willDo();
   return (
     <>
