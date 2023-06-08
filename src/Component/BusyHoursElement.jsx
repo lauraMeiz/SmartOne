@@ -1,5 +1,5 @@
 import BusyHoursElementSCSS from "../Style/BusyHoursElement.module.scss";
-
+import ButtonSCSS from "../Style/Button.module.scss";
 export default function BusyHoursElement({ time, deleteElement, show }) {
   const handleDelete = (id) => {
     deleteElement(parseInt(id));
@@ -9,11 +9,17 @@ export default function BusyHoursElement({ time, deleteElement, show }) {
       <div className={BusyHoursElementSCSS.busyColumn}>
         <div>{time.dateBusy}</div>
         <div>{time.hoursBusy}</div>
-        <div className="buttons">
-          <button onClick={() => handleDelete(time.id)} className="">
+        <div className={ButtonSCSS.listButton}>
+          <button
+            className={ButtonSCSS.buttonDeleteBusy}
+            onClick={() => handleDelete(time.id)}
+          >
             Delete
           </button>
-          <button className="edit" onClick={() => show(time.id)}>
+          <button
+            className={ButtonSCSS.buttonBusyCancel}
+            onClick={() => show(time.id)}
+          >
             Edit
           </button>
         </div>

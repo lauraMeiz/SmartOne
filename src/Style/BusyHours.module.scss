@@ -1,10 +1,19 @@
 .busyHoursRow {
   background-color: rgb(99, 84, 84);
   width: 300px;
-  margin: 70px calc(50% - 150px);
+  border-radius: 15px;
+  margin: 10px calc(50% - 150px);
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
   padding: 20px;
   color: rgb(240, 230, 230);
+  .input {
+    background-color: rgb(216, 208, 208);
+    color: rgb(80, 79, 79);
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 17px;
+    color: rgb(80, 72, 72);
+  }
 }
