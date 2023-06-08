@@ -7,3 +7,25 @@
   flex-wrap: wrap;
   color: rgb(240, 230, 230);
 }
+.commentRow {
+  width: 500px;
+}
+
+@media (max-width: 750px) {
+  .commentRow {
+    width: 400px;
+  }
+  .resultRow {
+    width: 400px;
+    margin: 0px calc(50% - 200px);
+  }
+}
+@media (max-width: 550px) {
+  .commentRow {
+    width: 300px;
+  }
+  .resultRow {
+    width: 300px;
+    margin: 0px calc(50% - 150px);
+  }
+}

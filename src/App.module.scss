@@ -6,7 +6,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-image: url(../src/img/books-927394_1280.jpg);
+  background-image: url(../src/img/photocased58d4pvs2.jpg);
   background-size: cover;
   background-position: top;
   .title {
@@ -18,5 +18,21 @@
     border-radius: 5px;
     background-color: rgb(137, 127, 127);
     color: rgb(234, 230, 230);
+  }
+}
+@media (max-width: 750px) {
+  .title {
+    font-size: 33px;
+  }
+  .todayDate {
+    font-size: 23px;
+  }
+}
+@media (max-width: 550px) {
+  .title {
+    font-size: 33px;
+  }
+  .todayDate {
+    font-size: 23px;
   }
 }

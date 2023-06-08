@@ -56,7 +56,7 @@ export default function Form({
 
   return (
     <>
-      <div>
+      <div className={FormSCSS.comment}>
         Please, enter your how much hours you need and finally date (not include
         hours)
       </div>

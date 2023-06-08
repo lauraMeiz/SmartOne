@@ -12,7 +12,7 @@ export default function ResultList({
   willDo();
   return (
     <>
-      <div>
+      <div className={ResultListSCSS.commentRow}>
         <div>You need {sliceGoals ? sliceGoals.volume : null} hours</div>
         {onTime ? (
           <>

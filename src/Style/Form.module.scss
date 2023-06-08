@@ -1,3 +1,8 @@
+.comment {
+  width: 500px;
+  background-color: rgb(222, 221, 221, 0.2);
+}
+
 .formRow {
   background-color: rgb(99, 84, 84);
   width: 300px;
@@ -9,10 +14,12 @@
   padding: 10px;
   color: rgb(240, 230, 230);
   border-radius: 15px;
+
   .column {
     background-color: black;
     flex-direction: row;
   }
+
   // .input {
   //   background-color: rgb(216, 208, 208);
   //   color: rgb(80, 79, 79);
@@ -21,4 +28,14 @@
   //   font-size: 17px;
   //   color: rgb(80, 72, 72);
   // }
+}
+@media (max-width: 750px) {
+  .comment {
+    width: 400px;
+  }
+}
+@media (max-width: 550px) {
+  .comment {
+    width: 300px;
+  }
 }
