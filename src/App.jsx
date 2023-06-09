@@ -304,7 +304,7 @@ function App() {
       kiekReikiaPerDiena < kiekPerDienaLieka ? setOnTime(1) : setOnTime(0);
     return spesiu;
   };
-
+  console.log(results);
   return (
     <>
       <div className={AppSCSS.app}>
@@ -343,14 +343,19 @@ function App() {
           willDo={willDo}
         />
 
-        <ResultList
-          results={sumArray}
-          times={times}
-          onTime={onTime}
-          willDo={willDo}
-          totalPerDay={totalPerDay}
-          sliceGoals={sliceGoals}
-        />
+        {results && onTime ? (
+          <ResultList
+            results={sumArray}
+            times={times}
+            onTime={onTime}
+            willDo={willDo}
+            totalPerDay={totalPerDay}
+            sliceGoals={sliceGoals}
+            setOnTime={setOnTime}
+          />
+        ) : (
+          <div></div>
+        )}
       </div>
     </>
   );
