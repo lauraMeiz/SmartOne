@@ -6,7 +6,7 @@ import CreateBusyHours from "./Component/CreateBusyHours";
 import BusyHoursList from "./Component/BusyHoursList";
 import ResultList from "./Component/ResultList";
 import React from "react";
-
+import FormSCSS from "../src/Style/Form.module.scss";
 function App() {
   const [times, setTimes] = useState([]);
   const [modal, setModal] = useState(0);
@@ -16,7 +16,8 @@ function App() {
   const sleep = "8";
   const eat = "4";
   const totalPerDay = "24" - sleep - eat; //12
-  let sum = 0;
+
+  let suma = 0;
 
   //
   useEffect(() => {
@@ -28,6 +29,12 @@ function App() {
       setTimes(JSON.parse(data));
     }
   }, []);
+  const getTim = JSON.parse(localStorage.getItem("times"));
+
+  for (let i = 0; i < getTim?.length; i++) {
+    const element = getTim[i].hoursBusy;
+    suma += +element;
+  }
 
   useEffect(() => {
     let data1 = localStorage.getItem("goals");
@@ -105,26 +112,19 @@ function App() {
     const date = new Date(start.getTime());
 
     const dates = [];
-    const getTimes = JSON.parse(localStorage.getItem("times"));
 
     let total = sliceGoals ? +sliceGoals.volume : null;
-
-    // let sum = 0;
-    for (let i = 0; i < getTimes && getTimes.length; i++) {
-      const element = getTimes[i].hoursBusy;
-      sum += +element;
-    }
 
     const isVisoTuriu = Difference_In_Days * 24;
     let chance = isVisoTuriu - Difference_In_Days * totalPerDay;
 
-    //kiek lieka po miego busy ir t.t.
-    const maxHoursHavePerDay = (chance - sum) / Difference_In_Days;
+    //
+    const maxHoursHavePerDay = chance / Difference_In_Days;
     const maxHoursNeededPerDay = total / Difference_In_Days;
+    const hoursT = maxHoursNeededPerDay + suma / Difference_In_Days;
 
     while (date <= end) {
-      const hours =
-        parseInt(maxHoursNeededPerDay) + parseInt(sum / Difference_In_Days);
+      const hours = hoursT.toFixed(2);
 
       dates.push({
         id: getNewId(),
@@ -182,8 +182,6 @@ function App() {
 
   const resFormated2 = JSON.parse(localStorage.getItem("result"));
 
-  console.log(resFormated2);
-
   const arrayTime = [];
   const elementTimes = getTimes
     ? getTimes.forEach((e) => {
@@ -209,18 +207,20 @@ function App() {
   const sumArray = arrayConcat
     ? arrayConcat.reduce((acc, cur) => {
         const found = acc.find((val) => val.date === cur.date);
-        let isVisoTuriu = Difference_In_Days * 24; //kiek yra
+        let isVisoTuriu = Difference_In_Hours; //kiek yra
 
-        let possibility = isVisoTuriu - sum - Difference_In_Days * 12;
+        const sumaFinally =
+          suma / Difference_In_Days > totalPerDay ? null : suma;
+
+        let possibility =
+          isVisoTuriu + sumaFinally - Difference_In_Days * totalPerDay;
 
         if (found) {
-          console.log(getTimes, Difference_In_Days);
-
           possibility -= Number(cur.hours);
 
           found.hours -= Number(cur.hours);
         } else {
-          acc.push({ ...cur, hours: Number(cur.hours) });
+          acc.push({ ...cur, hours: Number(cur.hours).toFixed(2) });
         }
         return acc;
       }, [])
@@ -281,21 +281,15 @@ function App() {
 
     setTimes((times) => times.filter((time) => time.id !== id));
   };
+
   const willDo = () => {
-    const getTime = JSON.parse(localStorage.getItem("times"));
-    const getTimes = getTime ? getTime : null;
     const isVisoTuriu = Difference_In_Days * 24;
 
     const iskrenta = "24" - sleep - eat; //12
     const totalIskrenta = iskrenta * Difference_In_Days;
 
-    for (let i = 0; i < getTimes && getTimes.length; i++) {
-      const element = getTimes[i].hoursBusy;
-      sum += +element;
-    }
-
     const kiekPerDienaLieka =
-      (isVisoTuriu - totalIskrenta - sum) / Difference_In_Days;
+      (isVisoTuriu - totalIskrenta - suma) / Difference_In_Days;
 
     const kiekReikiaPerDiena = sliceGoals
       ? +sliceGoals.volume / Difference_In_Days
@@ -304,7 +298,7 @@ function App() {
       kiekReikiaPerDiena < kiekPerDienaLieka ? setOnTime(1) : setOnTime(0);
     return spesiu;
   };
-  console.log(results);
+
   return (
     <>
       <div className={AppSCSS.app}>
@@ -312,7 +306,7 @@ function App() {
           <div className={AppSCSS.title}>Let's check your chance !</div>
           <div className={AppSCSS.todayDate}>Today {currentDate}</div>
         </div>
-        <div>Please, enter your busy hours</div>
+        <div className={FormSCSS.comment}>Please, enter your busy hours</div>
         <CreateBusyHours
           times={times}
           createBusyTimeList={createBusyTimeList}
@@ -343,19 +337,14 @@ function App() {
           willDo={willDo}
         />
 
-        {results && onTime ? (
-          <ResultList
-            results={sumArray}
-            times={times}
-            onTime={onTime}
-            willDo={willDo}
-            totalPerDay={totalPerDay}
-            sliceGoals={sliceGoals}
-            setOnTime={setOnTime}
-          />
-        ) : (
-          <div></div>
-        )}
+        <ResultList
+          results={sumArray}
+          onTime={onTime}
+          willDo={willDo}
+          totalPerDay={totalPerDay}
+          sliceGoals={sliceGoals}
+          setOnTime={setOnTime}
+        />
       </div>
     </>
   );

@@ -2,7 +2,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   background-color: rgba(62, 56, 56, 0.95);
   display: flex;
@@ -35,8 +35,4 @@
       color: rgb(80, 72, 72);
     }
   }
-  // .button {
-  //   padding: 20px;
-  //   color: white;
-  // }
 }

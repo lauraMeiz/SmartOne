@@ -5,7 +5,7 @@ export default function ResultList({
   onTime,
   willDo,
   totalPerDay,
-  times,
+
   sliceGoals,
 }) {
   willDo();
@@ -19,16 +19,7 @@ export default function ResultList({
           {onTime ? (
             <>
               <div style={{ color: "blue" }}>
-                You will be on time, your work schedule is here
-              </div>
-
-              <div style={{ color: "blue", fontStyle: "italic" }}>
-                {" "}
-                You have free time in day {totalPerDay}{" "}
-                <div style={{ color: "brown", fontStyle: "italic" }}>
-                  Please, choose the dates when you want to compensate the hours
-                  taken and add how much you could allocate
-                </div>
+                To be on time, you must have your work schedule
               </div>
             </>
           ) : (
@@ -46,15 +37,9 @@ export default function ResultList({
         </div>
       </div>
       <div className={ResultListSCSS.resultRow}>
-        {results.map((m, i) => (
+        {results.map((m) => (
           <>
-            <ResultElement
-              key={m.id}
-              result={m}
-              onTime={onTime}
-              totalPerDay={totalPerDay}
-              times={times}
-            />
+            <ResultElement key={m.id} result={m} onTime={onTime} />
           </>
         ))}
       </div>

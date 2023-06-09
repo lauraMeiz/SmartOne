@@ -55,7 +55,7 @@ export default function CreateBusyHours({ createBusyTimeList }) {
             className={ButtonSCSS.buttonSaveBusy}
             onClick={handleCreateList}
           >
-            Save and tape other
+            save and type an other
           </button>
         </div>
       </div>

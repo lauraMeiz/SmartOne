@@ -1,16 +1,16 @@
-# The App. Smart App for student
+# Smart App for student
 
-This project is test task.
+This project is homework.
 
 ## Installation
 
-Clone it locally on your machine git clone https://github.com/lauraMeiz/Movie.git
+Clone it locally on your machine --> git clone https://github.com/lauraMeiz/SmartOne.git
 Type npm i in the code editor terminal
 
 ### `npm start`
 
 ## Project features
 
-CRUD
-SCSS modules
+CRUD /
+SCSS modules /
 Responsive design (500px)

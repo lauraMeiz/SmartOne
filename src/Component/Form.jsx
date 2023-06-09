@@ -34,13 +34,6 @@ export default function Form({
     setVolume("0");
   };
 
-  // const calculate = () => {
-  //   const result = {
-  //     volume: (goals.volume = +times.hoursBusy),
-  //   };
-  //   getResult(result);
-  // };
-
   const handleInput = (e, d) => {
     switch (d) {
       case "volume":
@@ -61,20 +54,19 @@ export default function Form({
         hours)
       </div>
       <div className={FormSCSS.formRow}>
-        {/* <form> */}
-        {/* <div className={FormSCSS.column}> */}
         <label htmlFor="volume">volume</label>
         <input
+          className={FormSCSS.input}
           type="number"
           id="volume"
           placeholder="Total Hours"
           value={volume}
           onChange={(e) => handleInput(e, "volume")}
         />
-        {/* </div> */}
 
         <label htmlFor="date">Deadline</label>
         <input
+          className={FormSCSS.input}
           type="date"
           id="date"
           placeholder="Deadline"
@@ -90,11 +82,9 @@ export default function Form({
           onClick={handleGoal}
           type="submit"
         >
-          {/* <button onClick={getResult} type="submit"> */}
           Show a result
         </button>
       </div>
-      {/* </form> */}
 
       <div>
         {modal ? (

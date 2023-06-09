@@ -1,6 +1,6 @@
 import ResultElementSCSS from "../Style/ResultElement.module.scss";
 
-export default function ResultElement({ result, times, onTime, totalPerDay }) {
+export default function ResultElement({ result, onTime }) {
   return (
     <>
       <div className={ResultElementSCSS.busyColumn}>
