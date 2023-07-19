@@ -1,6 +1,6 @@
 # Smart App for student
 
-This project is homework.
+This project is homework. This application will show the student how much time he has to spend each day in order to be able to present the thesis. The student must enter the expected days occupied, the end date and the total number of hours required.
 
 ## Installation
 
